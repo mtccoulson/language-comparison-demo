@@ -9,7 +9,6 @@ Created on Thu Apr  2 14:33:47 2020
 import pandas as pd
 import numpy as np
 from scipy.stats import rankdata
-from sklearn.linear_model import LogisticRegression
 
 
 def compute_sigmoid(x):
@@ -85,17 +84,9 @@ class gradient_descent_optimiser():
             print('solution did not converge in max iterations')
             
     def predict(self, X):
-        exponent = np.matmul(X, self.params)
+        exponent = np.dot(X, self.params)
         return compute_sigmoid(exponent)
             
-    
-def fit_sklearn_log_reg(X,y):
-    model = LogisticRegression(
-        penalty = 'none',
-        fit_intercept = False,
-    )
-    model.fit(X, y)
-    return model
     
     
 if __name__ == '__main__':
@@ -108,14 +99,9 @@ if __name__ == '__main__':
     log_reg_optimiser = gradient_descent_optimiser(X = X, y = y)
     log_reg_optimiser.gradient_descent()
     
-    log_reg_sklearn = fit_sklearn_log_reg(X, y)
-    
     #evaluate performance
     print(log_reg_optimiser.params)
     
     preds = log_reg_optimiser.predict(X)
     print(fast_auc(actual = y, predicted = preds))
-    
-    preds_sklearn = log_reg_sklearn.predict(X)
-    print(fast_auc(actual = y, predicted = preds_sklearn))
     
